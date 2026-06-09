@@ -1,0 +1,1914 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quaderno esercizi UX semplice | DE&I nei Negozi | 6 cappelli</title>
+  <meta name="description" content="Quaderno degli esercizi asincrono per Store Leader Academy - DE&I nei Negozi. Allenamento guidato alla tecnica dei sei cappelli.">
+  <style>
+    :root {
+      --bg: #f7f4ef;
+      --paper: #fffdf9;
+      --ink: #24211f;
+      --muted: #655e57;
+      --line: #ded4c8;
+      --soft: #f0e8dd;
+      --brand: #5a3e2d;
+      --brand-dark: #34251c;
+      --brand-soft: #eaded2;
+      --focus: #1457d9;
+      --ok: #12613b;
+      --ok-soft: #e8f5ee;
+      --warn: #8a4b00;
+      --warn-soft: #fff3dd;
+      --danger: #8b2d18;
+      --danger-soft: #fff0ed;
+      --radius: 20px;
+      --radius-sm: 14px;
+      --shadow: 0 18px 48px rgba(36, 33, 31, .08);
+      --max: 1180px;
+      --bottom-nav-h: 86px;
+      --red-soft: #fde9e5;
+      --white-soft: #ffffff;
+      --black-soft: #ece9e4;
+      --green-soft: #e7f5ec;
+      --yellow-soft: #fff6ce;
+      --blue-soft: #e6f0fb;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(234, 222, 210, .92), transparent 32rem),
+        linear-gradient(180deg, #faf8f4 0%, var(--bg) 100%);
+      line-height: 1.55;
+      padding-bottom: var(--bottom-nav-h);
+    }
+
+    [hidden] { display: none !important; }
+    a { color: var(--brand-dark); }
+    button, input, textarea, select { font: inherit; }
+
+    .skip-link {
+      position: absolute;
+      top: -48px;
+      left: 14px;
+      z-index: 9999;
+      background: #fff;
+      border: 2px solid var(--focus);
+      border-radius: 999px;
+      padding: .7rem 1rem;
+      transition: top .2s ease;
+    }
+    .skip-link:focus { top: 12px; }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(255, 253, 249, .94);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(90, 62, 45, .14);
+      box-shadow: 0 8px 22px rgba(36, 33, 31, .05);
+    }
+
+    .topbar-inner {
+      width: min(var(--max), calc(100% - 28px));
+      margin: 0 auto;
+      padding: 12px 0 10px;
+    }
+
+    .top-line {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 10px;
+    }
+
+    .brand-block { min-width: 0; }
+    .kicker {
+      margin: 0 0 1px;
+      color: var(--brand);
+      font-size: .72rem;
+      font-weight: 850;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    .title-mini {
+      margin: 0;
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      letter-spacing: -.02em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .save-state {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: .45rem .7rem;
+      font-size: .86rem;
+      white-space: nowrap;
+    }
+    .save-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: var(--ok);
+      flex: 0 0 auto;
+    }
+
+    .progress-row {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 12px;
+      align-items: center;
+      color: var(--muted);
+      font-size: .9rem;
+    }
+    .progress-rail {
+      height: 10px;
+      border-radius: 999px;
+      background: #e7ded3;
+      overflow: hidden;
+    }
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: var(--brand);
+      border-radius: 999px;
+      transition: width .25s ease;
+    }
+
+    .app {
+      width: min(var(--max), calc(100% - 28px));
+      margin: 22px auto 0;
+      display: grid;
+      grid-template-columns: 278px 1fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .side {
+      position: sticky;
+      top: 98px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .side-card, .panel, .mini-card {
+      background: rgba(255, 253, 249, .92);
+      border: 1px solid rgba(90, 62, 45, .13);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .side-card { padding: 18px; }
+    .side-card h2 {
+      margin: 0 0 10px;
+      font-size: .88rem;
+      text-transform: uppercase;
+      letter-spacing: .11em;
+      color: var(--muted);
+    }
+
+    .stepper {
+      display: grid;
+      gap: 8px;
+    }
+    .step-button {
+      width: 100%;
+      min-height: 46px;
+      border: 1px solid transparent;
+      border-radius: 14px;
+      background: transparent;
+      color: var(--ink);
+      padding: 8px 10px;
+      display: grid;
+      grid-template-columns: 30px 1fr auto;
+      gap: 8px;
+      align-items: center;
+      text-align: left;
+      cursor: pointer;
+    }
+    .step-button:not(:disabled):hover { background: var(--soft); }
+    .step-button.is-active {
+      background: var(--ok);
+      color: #fff;
+      border-color: var(--ok);
+    }
+    .step-button.is-complete:not(.is-active) {
+      background: #fff;
+      border-color: rgba(90, 62, 45, .22);
+    }
+    .step-button[disabled] {
+      cursor: not-allowed;
+      opacity: .48;
+      background: #f3eee7;
+    }
+    .step-number {
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+      border: 1px solid rgba(36, 33, 31, .1);
+      font-weight: 900;
+      font-size: .82rem;
+      color: var(--brand-dark);
+    }
+    .step-button.is-active .step-number { background: #fff; color: var(--ok); }
+    .step-title { font-weight: 850; line-height: 1.15; }
+    .step-status { font-size: .75rem; opacity: .8; }
+
+    .quick-info {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+    }
+    .quick-info div {
+      display: grid;
+      gap: 2px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(90, 62, 45, .12);
+    }
+    .quick-info div:last-child { border-bottom: 0; padding-bottom: 0; }
+    .quick-info dt { color: var(--muted); font-size: .78rem; text-transform: uppercase; letter-spacing: .08em; font-weight: 850; }
+    .quick-info dd { margin: 0; font-weight: 750; }
+
+    main { min-width: 0; }
+
+    .mobile-step-jump {
+      display: none;
+      margin-bottom: 14px;
+    }
+
+    .panel {
+      padding: clamp(22px, 4vw, 40px);
+      overflow: hidden;
+    }
+    .panel-header {
+      margin-bottom: 22px;
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: flex-start;
+    }
+    .panel-kicker {
+      margin: 0 0 8px;
+      color: var(--brand);
+      font-size: .78rem;
+      font-weight: 900;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    .panel h1, .panel h2 {
+      margin: 0;
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      line-height: .98;
+      letter-spacing: -.055em;
+    }
+    .panel-lead {
+      color: var(--muted);
+      font-size: clamp(1rem, 1.65vw, 1.18rem);
+      max-width: 820px;
+      margin: 14px 0 0;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: .45rem .7rem;
+      border-radius: 999px;
+      border: 1px solid rgba(90, 62, 45, .14);
+      background: var(--brand-soft);
+      color: var(--brand-dark);
+      font-size: .78rem;
+      font-weight: 850;
+      white-space: nowrap;
+    }
+    .badge.ok { background: var(--ok-soft); color: var(--ok); border-color: rgba(18, 97, 59, .18); }
+    .badge.warn { background: var(--warn-soft); color: var(--warn); border-color: rgba(138, 75, 0, .2); }
+
+    .intro-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-top: 22px;
+    }
+    .mini-card { padding: 18px; box-shadow: none; }
+    .mini-card strong { display: block; font-size: 1.05rem; letter-spacing: -.02em; margin-bottom: 6px; }
+    .mini-card p { margin: 0; color: var(--muted); font-size: .95rem; }
+
+    .callout {
+      padding: 16px 18px;
+      border-radius: var(--radius-sm);
+      background: #f4ede5;
+      border: 1px solid rgba(90, 62, 45, .15);
+      color: var(--brand-dark);
+      margin: 18px 0;
+    }
+    .callout strong { color: var(--ink); }
+    .callout.success { background: var(--ok-soft); border-color: rgba(18, 97, 59, .18); color: var(--ok); }
+    .callout.warning { background: var(--warn-soft); border-color: rgba(138, 75, 0, .2); color: var(--warn); }
+    .callout.danger { background: var(--danger-soft); border-color: rgba(139, 45, 24, .22); color: var(--danger); }
+
+    .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+
+    .field {
+      margin-bottom: 16px;
+    }
+    .field:last-child { margin-bottom: 0; }
+    label, legend {
+      display: block;
+      margin: 0 0 7px;
+      font-weight: 850;
+      color: var(--ink);
+      line-height: 1.25;
+    }
+    .req {
+      color: var(--danger);
+      font-weight: 950;
+    }
+    .hint {
+      margin: 0 0 8px;
+      color: var(--muted);
+      font-size: .92rem;
+    }
+    input[type="text"], input[type="email"], select, textarea {
+      width: 100%;
+      border: 1px solid #cfc4b7;
+      border-radius: 14px;
+      background: #fff;
+      color: var(--ink);
+      padding: 12px 13px;
+      transition: border-color .16s ease, box-shadow .16s ease, background .16s ease;
+    }
+    textarea { min-height: 116px; resize: vertical; }
+    input:focus, select:focus, textarea:focus, button:focus-visible {
+      outline: 3px solid rgba(20, 87, 217, .25);
+      outline-offset: 2px;
+      border-color: var(--focus);
+    }
+    .field.is-invalid input,
+    .field.is-invalid textarea,
+    .field.is-invalid select,
+    .field.is-invalid .check-row {
+      border-color: var(--danger);
+      box-shadow: 0 0 0 3px rgba(139, 45, 24, .1);
+    }
+    .error-text {
+      color: var(--danger);
+      font-size: .86rem;
+      font-weight: 750;
+      margin-top: 6px;
+    }
+
+    .check-row {
+      display: flex;
+      gap: 11px;
+      align-items: flex-start;
+      border: 1px solid rgba(90, 62, 45, .15);
+      background: #fff;
+      border-radius: 14px;
+      padding: 13px 14px;
+    }
+    .check-row input { width: 18px; height: 18px; margin: 3px 0 0; flex: 0 0 auto; }
+    .check-row label { margin: 0; font-weight: 700; }
+
+    .scenario-card {
+      display: grid;
+      gap: 12px;
+      background: #fff9f1;
+      border: 1px solid rgba(90, 62, 45, .16);
+      border-left: 6px solid var(--brand);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: 16px 18px;
+      margin-bottom: 18px;
+    }
+    .scenario-card p { margin: 0; }
+    .scenario-card blockquote {
+      margin: 0;
+      color: var(--brand-dark);
+      font-size: clamp(1.04rem, 1.6vw, 1.18rem);
+      font-weight: 800;
+      line-height: 1.35;
+    }
+
+    .exercise-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: center;
+      margin: 18px 0 10px;
+    }
+    .exercise-top h3 { margin: 0; font-size: 1.1rem; letter-spacing: -.02em; }
+
+    .hat-tabs {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 4px 2px 12px;
+      margin: 0 -2px 14px;
+      scrollbar-width: thin;
+    }
+    .hat-tab {
+      flex: 0 0 auto;
+      border: 1px solid rgba(36, 33, 31, .1);
+      border-radius: 999px;
+      background: #fff;
+      color: var(--ink);
+      padding: .65rem .85rem;
+      cursor: pointer;
+      font-weight: 850;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .hat-tab.is-active { background: var(--ok); color: #fff; border-color: var(--ok); }
+    .hat-tab.is-complete:not(.is-active) { background: #fff; color: var(--ink); border-color: rgba(90, 62, 45, .22); }
+    .hat-tab[disabled] { opacity: .45; cursor: not-allowed; }
+    .hat-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      display: inline-block;
+      border: 1px solid rgba(36, 33, 31, .18);
+      flex: 0 0 auto;
+    }
+    .hat-dot.red { background: #cf3b27; }
+    .hat-dot.white { background: #fff; }
+    .hat-dot.black { background: #24211f; }
+    .hat-dot.green { background: #16804a; }
+    .hat-dot.yellow { background: #f1c91f; }
+    .hat-dot.blue { background: #2d74bd; }
+
+    .hat-panel {
+      display: none;
+      border: 1px solid rgba(36, 33, 31, .09);
+      border-radius: var(--radius);
+      padding: clamp(18px, 3vw, 26px);
+    }
+    .hat-panel.is-active { display: block; }
+    .hat-panel.red { background: var(--red-soft); }
+    .hat-panel.white { background: var(--white-soft); }
+    .hat-panel.black { background: var(--black-soft); }
+    .hat-panel.green { background: var(--green-soft); }
+    .hat-panel.yellow { background: var(--yellow-soft); }
+    .hat-panel.blue { background: var(--blue-soft); }
+    .hat-panel h4 {
+      margin: 0 0 6px;
+      font-size: clamp(1.25rem, 2vw, 1.7rem);
+      letter-spacing: -.035em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .hat-panel .hat-intro { color: var(--muted); margin: 0 0 16px; max-width: 850px; }
+    .hat-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 18px;
+    }
+
+    .btn {
+      appearance: none;
+      border: 1px solid rgba(36, 33, 31, .14);
+      border-radius: 999px;
+      min-height: 44px;
+      padding: .76rem 1rem;
+      font-weight: 900;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: #fff;
+      color: var(--ink);
+      transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+    }
+    .btn:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(36, 33, 31, .08); }
+    .btn:active { transform: translateY(0); }
+    .btn.primary { background: var(--brand-dark); border-color: var(--brand-dark); color: #fffaf4; }
+    .btn.secondary { background: var(--brand-soft); border-color: rgba(90, 62, 45, .2); color: var(--brand-dark); }
+    .btn.success { background: var(--ok); border-color: var(--ok); color: #fff; }
+    .btn.danger { background: var(--danger-soft); border-color: rgba(139, 45, 24, .22); color: var(--danger); }
+    .btn.ghost { background: transparent; }
+    .btn[disabled] { opacity: .48; cursor: not-allowed; transform: none; box-shadow: none; }
+
+    .option-list {
+      display: grid;
+      gap: 14px;
+      margin: 18px 0;
+    }
+    .option-card {
+      border: 1px solid rgba(90, 62, 45, .15);
+      background: #fff;
+      border-radius: var(--radius);
+      padding: 16px;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 12px;
+      align-items: start;
+      box-shadow: 0 10px 28px rgba(36, 33, 31, .04);
+    }
+    .option-card input { width: 20px; height: 20px; margin-top: 4px; }
+    .option-card h3 { margin: 0 0 4px; font-size: 1.08rem; letter-spacing: -.02em; }
+    .option-card p { margin: 0; color: var(--muted); }
+    .option-card.is-selected { border-color: var(--ok); background: var(--ok-soft); }
+
+    .optional-workbook {
+      border: 1px solid rgba(90, 62, 45, .14);
+      border-radius: var(--radius);
+      background: #fff;
+      margin: 12px 0 20px;
+      overflow: hidden;
+    }
+    .optional-head {
+      background: #f6efe7;
+      padding: 18px;
+      border-bottom: 1px solid rgba(90, 62, 45, .12);
+    }
+    .optional-head h3 { margin: 0; font-size: 1.3rem; letter-spacing: -.025em; }
+    .optional-head p { margin: 8px 0 0; color: var(--muted); }
+    .optional-body { padding: 18px; }
+    .compact-hat-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .compact-hat {
+      border: 1px solid rgba(36, 33, 31, .08);
+      border-radius: var(--radius-sm);
+      padding: 14px;
+    }
+    .compact-hat.red { background: var(--red-soft); }
+    .compact-hat.white { background: var(--white-soft); }
+    .compact-hat.black { background: var(--black-soft); }
+    .compact-hat.green { background: var(--green-soft); }
+    .compact-hat.yellow { background: var(--yellow-soft); }
+    .compact-hat.blue { background: var(--blue-soft); }
+    .compact-hat h4 {
+      margin: 0 0 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1rem;
+    }
+    .compact-hat textarea { min-height: 98px; background: rgba(255,255,255,.82); }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .review-box {
+      background: #fff;
+      border: 1px solid rgba(90, 62, 45, .13);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+    }
+    .review-box h3 { margin: 0 0 10px; font-size: 1.05rem; }
+    .review-box p { margin: 6px 0; color: var(--muted); }
+    .missing-list {
+      margin: 10px 0 0;
+      padding-left: 20px;
+      color: var(--danger);
+      font-weight: 700;
+    }
+
+    .status {
+      display: none;
+      margin-top: 16px;
+      padding: 14px 16px;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(90, 62, 45, .15);
+      background: #f4ede5;
+      color: var(--brand-dark);
+      font-weight: 700;
+    }
+    .status.show { display: block; }
+    .status.ok { background: var(--ok-soft); color: var(--ok); border-color: rgba(18, 97, 59, .2); }
+    .status.err { background: var(--danger-soft); color: var(--danger); border-color: rgba(139, 45, 24, .22); }
+
+    .bottom-nav {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 1000;
+      background: rgba(255, 253, 249, .96);
+      border-top: 1px solid rgba(90, 62, 45, .14);
+      box-shadow: 0 -12px 30px rgba(36, 33, 31, .08);
+    }
+    .bottom-inner {
+      width: min(var(--max), calc(100% - 28px));
+      margin: 0 auto;
+      min-height: var(--bottom-nav-h);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+    .bottom-current { color: var(--muted); font-weight: 750; }
+    .bottom-current strong { color: var(--ink); }
+    .bottom-actions { display: flex; gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @media (max-width: 1020px) {
+      .app { grid-template-columns: 1fr; }
+      .side { position: static; }
+      .side-card.navigation-card { display: none; }
+      .mobile-step-jump { display: block; }
+      .intro-grid { grid-template-columns: repeat(2, 1fr); }
+      .topbar { position: sticky; }
+    }
+
+    @media (max-width: 720px) {
+      :root { --bottom-nav-h: 112px; }
+      .top-line { align-items: flex-start; }
+      .save-state { display: none; }
+      .progress-row { grid-template-columns: 1fr; gap: 6px; }
+      .panel-header { display: block; }
+      .panel h1, .panel h2 { font-size: clamp(1.85rem, 9vw, 2.65rem); }
+      .intro-grid, .grid-2, .grid-3, .compact-hat-grid, .summary-grid { grid-template-columns: 1fr; }
+      .option-card { grid-template-columns: auto 1fr; }
+      .option-card .badge { grid-column: 2; width: fit-content; }
+      .bottom-inner { align-items: stretch; flex-direction: column; padding: 10px 0; }
+      .bottom-actions { width: 100%; }
+      .bottom-actions .btn { flex: 1; }
+      .bottom-current { width: 100%; font-size: .92rem; }
+    }
+
+    @media print {
+      body { background: #fff; padding-bottom: 0; }
+      .topbar, .side, .bottom-nav, .mobile-step-jump, .hat-tabs, .hat-actions, .btn, .status { display: none !important; }
+      .app { display: block; width: 100%; margin: 0; }
+      .panel { box-shadow: none; border: 0; display: block !important; page-break-inside: avoid; }
+      .hat-panel { display: block !important; margin-bottom: 12px; }
+      .optional-workbook { display: block !important; page-break-inside: avoid; }
+      textarea, input, select { border: 1px solid #999; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar" role="banner">
+    <div class="topbar-inner">
+      <div class="top-line">
+        <div class="brand-block">
+          <p class="kicker">Store Leader Academy · DE&I nei Negozi</p>
+          <p class="title-mini">Quaderno esercizi · tecnica dei 6 cappelli</p>
+        </div>
+        <div class="save-state" id="saveState" aria-live="polite"><span class="save-dot"></span><span>Bozza salvata</span></div>
+      </div>
+      <div class="progress-row" aria-label="Avanzamento del quaderno">
+        <span id="stepCounter">Passo 1 di 7</span>
+        <div class="progress-rail" aria-hidden="true"><div class="progress-bar" id="progressBar"></div></div>
+        <strong id="progressLabel">0%</strong>
+      </div>
+    </div>
+  </header>
+
+  <form id="workbookForm" novalidate>
+    <div class="app">
+      <aside class="side" aria-label="Navigazione del quaderno">
+        <section class="side-card navigation-card">
+          <h2>Mappa del percorso</h2>
+          <nav class="stepper" id="stepper" aria-label="Passi del quaderno"></nav>
+        </section>
+        <section class="side-card">
+          <h2>Info utili</h2>
+          <dl class="quick-info">
+            <div><dt>Tempo stimato</dt><dd>35-45 minuti</dd></div>
+            <div><dt>Salvataggio</dt><dd>automatico sul browser</dd></div>
+          </dl>
+        </section>
+      </aside>
+
+      <main id="contenuto">
+        <label class="sr-only" for="mobileStepSelect">Vai a un passo</label>
+        <select class="mobile-step-jump" id="mobileStepSelect" aria-label="Vai a un passo del quaderno"></select>
+
+        <section class="panel step-panel" data-step="start" aria-labelledby="start-title">
+          <div class="panel-header">
+            <div>
+              <p class="panel-kicker">Passo 1</p>
+              <h1 id="start-title">Quaderno esercizi</h1>
+              <p class="panel-lead">Questo quaderno ti guida un passo alla volta: prima capisci cosa fare, poi compili i dati, poi lavori sui due casi guidati. Infine scegli eventuali casi extra, oltre a quelli guidati, per poterti esercitare ulteriormente.</p>
+            </div>
+            <span class="badge">Live 4 → Live 5</span>
+          </div>
+
+          <div class="callout">
+            Prima dell'invio puoi indicare se vuoi inviare una copia anche al tuo HR di riferimento. Dopo l'invio definitivo potrai scaricare il PDF del quaderno compilato.
+          </div>
+
+          <div class="callout success">
+            <strong>Obiettivo:</strong> allenare pensiero divergente e leadership inclusiva su situazioni reali di negozio, trasformando reazioni immediate in decisioni consapevoli.
+          </div>
+        </section>
+
+        <section class="panel step-panel" data-step="dati" aria-labelledby="dati-title" hidden>
+          <div class="panel-header">
+            <div>
+              <p class="panel-kicker">Passo 2</p>
+              <h2 id="dati-title">Dati partecipante</h2>
+              <p class="panel-lead">Servono per collegare le risposte alla persona e al negozio. I campi con asterisco sono necessari per inviare.</p>
+            </div>
+            <span class="badge warn">Obbligatorio</span>
+          </div>
+
+          <div class="grid-2">
+            <div class="field">
+              <label for="participantName">Nome e cognome <span class="req">*</span></label>
+              <input id="participantName" name="participant_name" type="text" data-required="true" autocomplete="name">
+            </div>
+            <div class="field">
+              <label for="participantEmail">Email aziendale <span class="req">*</span></label>
+              <input id="participantEmail" name="participant_email" type="email" data-required="true" autocomplete="email" placeholder="nome.cognome@azienda.com">
+            </div>
+            <div class="field">
+              <label for="storeName">Negozio / store <span class="req">*</span></label>
+              <input id="storeName" name="store_name" type="text" data-required="true" placeholder="Es. Milano Centro">
+            </div>
+            <div class="field">
+              <label for="managerTenure">Da quanto ricopri il ruolo di Store Manager?</label>
+              <select id="managerTenure" name="store_manager_tenure">
+                <option value="">Seleziona...</option>
+                <option>Meno di un anno</option>
+                <option>1-2 anni</option>
+                <option>2-3 anni</option>
+                <option>4+ anni</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="completionMoment">In quale momento del percorso stai compilando l'esercizio?</label>
+              <select id="completionMoment" name="completion_moment">
+                <option value="">Seleziona...</option>
+                <option>Subito dopo la Live 4</option>
+                <option>Durante la settimana tra Live 4 e Live 5</option>
+                <option>Il giorno prima della Live 5</option>
+                <option>Dopo un confronto con il team</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="check-row">
+              <input type="checkbox" id="privacyConfirm" name="privacy_confirm" data-required="true">
+              <label for="privacyConfirm">Confermo di non inserire dati sensibili, diagnosi, informazioni sanitarie o nomi di collaboratori/clienti nelle risposte. <span class="req">*</span></label>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel step-panel" data-step="guidato-01" aria-labelledby="g01-title" hidden>
+          <div class="panel-header">
+            <div>
+              <p class="panel-kicker">Passo 3 · esercizio guidato 01</p>
+              <h2 id="g01-title">Luca in cassa durante il picco</h2>
+              <p class="panel-lead">Usa i cappelli in ordine. L'interfaccia ti mostra un cappello alla volta per aiutarti a ragionare senza confondere emozioni, fatti, rischi e decisione.</p>
+            </div>
+            <span class="badge warn" id="g01Completion">0/6 cappelli</span>
+          </div>
+
+          <div class="scenario-card">
+            <strong>Scenario</strong>
+            <blockquote>È sabato pomeriggio, negozio pieno. Luca è in cassa ma va in difficoltà con i pagamenti. Una cliente si innervosisce: «Scusi, ma non c'è qualcuno più veloce?». Come intervieni?</blockquote>
+          </div>
+
+          <div class="exercise-workspace" data-exercise="g01">
+            <div class="exercise-top">
+              <h3>Procedi cappello per cappello</h3>
+              <span class="badge">Guidato</span>
+            </div>
+            <div class="hat-tabs" role="tablist" aria-label="Cappelli esercizio 01">
+              <button class="hat-tab" type="button" data-hat="red"><span class="hat-dot red"></span>Rosso</button>
+              <button class="hat-tab" type="button" data-hat="white"><span class="hat-dot white"></span>Bianco</button>
+              <button class="hat-tab" type="button" data-hat="black"><span class="hat-dot black"></span>Nero</button>
+              <button class="hat-tab" type="button" data-hat="green"><span class="hat-dot green"></span>Verde</button>
+              <button class="hat-tab" type="button" data-hat="yellow"><span class="hat-dot yellow"></span>Giallo</button>
+              <button class="hat-tab" type="button" data-hat="blue"><span class="hat-dot blue"></span>Blu</button>
+            </div>
+
+            <div class="hat-panel red" data-hat-panel="red">
+              <h4><span class="hat-dot red"></span>Cappello rosso · reazione immediata</h4>
+              <p class="hat-intro">Prima riconosci cosa ti succede. Non devi giustificarti: servono emozioni rapide, non soluzioni.</p>
+              <div class="field">
+                <label for="g01_red">Cosa provi in questo momento? Scrivi 3 emozioni rapide. <span class="req">*</span></label>
+                <textarea id="g01_red" name="g01_red" data-required="true" placeholder="Es. stress, protezione verso Luca, fastidio per il tono della cliente..."></textarea>
+              </div>
+              <div class="hat-actions"><span></span><button type="button" class="btn secondary hat-next">Vai al Bianco</button></div>
+            </div>
+
+            <div class="hat-panel white" data-hat-panel="white">
+              <h4><span class="hat-dot white"></span>Cappello bianco · fatti osservabili</h4>
+              <p class="hat-intro">Ora separa i fatti dalle interpretazioni. Cosa vedresti in un video senza audio?</p>
+              <div class="field">
+                <label for="g01_white">Cosa sta succedendo oggettivamente? Aggiungi almeno 2 fatti osservabili. <span class="req">*</span></label>
+                <textarea id="g01_white" name="g01_white" data-required="true" placeholder="Es. clienti in attesa, Luca in difficoltà con un pagamento, coda in aumento..."></textarea>
+              </div>
+              <div class="hat-actions"><button type="button" class="btn ghost hat-prev">Torna al Rosso</button><button type="button" class="btn secondary hat-next">Vai al Nero</button></div>
+            </div>
+
+            <div class="hat-panel black" data-hat-panel="black">
+              <h4><span class="hat-dot black"></span>Cappello nero · rischi immediati</h4>
+              <p class="hat-intro">Metti a fuoco cosa potrebbe peggiorare se non intervieni bene.</p>
+              <div class="field">
+                <label for="g01_black">Qual è il rischio più grave ora? <span class="req">*</span></label>
+                <textarea id="g01_black" name="g01_black" data-required="true" placeholder="Es. cliente perso, umiliazione di Luca, clima negativo in coda, team che evita Luca..."></textarea>
+              </div>
+              <div class="hat-actions"><button type="button" class="btn ghost hat-prev">Torna al Bianco</button><button type="button" class="btn secondary hat-next">Vai al Verde</button></div>
+            </div>
+
+            <div class="hat-panel green" data-hat-panel="green">
+              <h4><span class="hat-dot green"></span>Cappello verde · soluzioni possibili</h4>
+              <p class="hat-intro">Genera alternative prima di scegliere. Devono essere azioni immediate, praticabili nei prossimi secondi.</p>
+              <div class="grid-3">
+                <div class="field"><label for="g01_green_1">Soluzione 1 <span class="req">*</span></label><textarea id="g01_green_1" name="g01_green_1" data-required="true"></textarea></div>
+                <div class="field"><label for="g01_green_2">Soluzione 2 <span class="req">*</span></label><textarea id="g01_green_2" name="g01_green_2" data-required="true"></textarea></div>
+                <div class="field"><label for="g01_green_3">Soluzione 3 <span class="req">*</span></label><textarea id="g01_green_3" name="g01_green_3" data-required="true"></textarea></div>
+              </div>
+              <div class="hat-actions"><button type="button" class="btn ghost hat-prev">Torna al Nero</button><button type="button" class="btn secondary hat-next">Vai al Giallo</button></div>
+            </div>
+
+            <div class="hat-panel yellow" data-hat-panel="yellow">
+              <h4><span class="hat-dot yellow"></span>Cappello giallo · scelta protettiva</h4>
+              <p class="hat-intro">Scegli la soluzione che tutela contemporaneamente cliente, Luca e team.</p>
+              <div class="field">
+                <label for="g01_yellow">Quale soluzione scegli e perché protegge tutti e tre? <span class="req">*</span></label>
+                <textarea id="g01_yellow" name="g01_yellow" data-required="true"></textarea>
+              </div>
+              <div class="hat-actions"><button type="button" class="btn ghost hat-prev">Torna al Verde</button><button type="button" class="btn secondary hat-next">Vai al Blu</button></div>
+            </div>
+
+            <div class="hat-panel blue" data-hat-panel="blue">
+              <h4><span class="hat-dot blue"></span>Cappello blu · decisione nei primi 30 secondi</h4>
+              <p class="hat-intro">Trasforma il ragionamento in parole e sequenza. Scrivi frasi utilizzabili davvero.</p>
+              <div class="grid-2">
+                <div class="field"><label for="g01_blue_customer">Frase alla cliente <span class="req">*</span></label><textarea id="g01_blue_customer" name="g01_blue_customer" data-required="true" placeholder="Es. La aiuto subito io, grazie per l'attesa..."></textarea></div>
+                <div class="field"><label for="g01_blue_luca">Frase a Luca <span class="req">*</span></label><textarea id="g01_blue_luca" name="g01_blue_luca" data-required="true" placeholder="Es. Luca, resto qui con te e facciamo insieme questo passaggio..."></textarea></div>
+              </div>
+              <div class="field"><label for="g01_blue_action">Cosa fai concretamente nei primi 30 secondi? <span class="req">*</span></label><textarea id="g01_blue_action" name="g01_blue_action" data-required="true"></textarea></div>
+              <div class="hat-actions"><button type="button" class="btn ghost hat-prev">Torna al Giallo</button><button type="button" class="btn primary" data-go-step="guidato-02">Completa e vai al guidato 02</button></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel step-panel" data-step="guidato-02" aria-labelledby="g02-title" hidden>
+          <div class="panel-header">
+            <div>
+              <p class="panel-kicker">Passo 4 · esercizio guidato 02</p>
+              <h2 id="g02-title">Far convivere generazioni differenti</h2>
+              <p class="panel-lead">Qui alleni la stessa tecnica su age diversity, comunicazione, tecnologia e approccio al lavoro nella quotidianità di negozio.</p>
+            </div>
+            <span class="badge warn" id="g02Completion">0/6 cappelli</span>
+          </div>
+
+          <div class="scenario-card">
+            <strong>Scenario</strong>
+            <blockquote>All'interno del tuo team sono presenti generazioni differenti. Emergono tensioni su comunicazione, uso della tecnologia e approccio al lavoro. Una volta interiorizzate le differenze esistenti, come le fai convivere nella quotidianità?</blockquote>
+          </div>
+
+          <div class="exercise-workspace" data-exercise="g02">
+            <div class="exercise-top">
+              <h3>Procedi cappello per cappello</h3>
+              <span class="badge">Guidato</span>
+            </div>
+            <div class="hat-tabs" role="tablist" aria-label="Cappelli esercizio 02">
+              <button class="hat-tab" type="button" data-hat="red"><span class="hat-dot red"></span>Rosso</button>
+              <button class="hat-tab" type="button" data-hat="white"><span class="hat-dot white"></span>Bianco</button>
+              <button class="hat-tab" type="button" data-hat="black"><span class="hat-dot black"></span>Nero</button>
+              <button class="hat-tab" type="button" data-hat="green"><span class="hat-dot green"></span>Verde</button>
+              <button class="hat-tab" type="button" data-hat="yellow"><span class="hat-dot yellow"></span>Giallo</button>
+              <button class="hat-tab" type="button" data-hat="blue"><span class="hat-dot blue"></span>Blu</button>
+            </div>
+
+            <div class="hat-panel red" data-hat-panel="red">
+              <h4><span class="hat-dot red"></span>Cappello rosso · reazioni e tensioni</h4>
+              <p class="hat-intro">Parti da quello che senti e da quello che percepisci nel team.</p>
+              <div class="field"><label for="g02_red">Quali emozioni o tensioni emergono in te e nel team? <span class="req">*</span></label><textarea id="g02_red" name="g02_red" data-required="true" placeholder="Es. impazienza, paura di non essere ascoltati, irritazione, curiosità..."></textarea></div>
+              <div class="hat-actions"><span></span><button type="button" class="btn secondary hat-next">Vai al Bianco</button></div>
+            </div>
+
+            <div class="hat-panel white" data-hat-panel="white">
+              <h4><span class="hat-dot white"></span>Cappello bianco · fatti e segnali</h4>
+              <p class="hat-intro">Descrivi episodi concreti, senza etichette generazionali.</p>
+              <div class="field"><label for="g02_white">Quali fatti osservabili mostrano tensioni su comunicazione, tecnologia o lavoro? <span class="req">*</span></label><textarea id="g02_white" name="g02_white" data-required="true" placeholder="Es. canali diversi usati male, feedback fraintesi, resistenze su procedure digitali..."></textarea></div>
+              <div class="hat-actions"><button type="button" class="btn ghost hat-prev">Torna al Rosso</button><button type="button" class="btn secondary hat-next">Vai al Nero</button></div>
+            </div>
+
+            <div class="hat-panel black" data-hat-panel="black">
+              <h4><span class="hat-dot black"></span>Cappello nero · rischi da presidiare</h4>
+              <p class="hat-intro">Cosa può succedere se lasci che le differenze diventino etichette?</p>
+              <div class="field"><label for="g02_black">Qual è il rischio più rilevante per collaborazione, clima o performance? <span class="req">*</span></label><textarea id="g02_black" name="g02_black" data-required="true"></textarea></div>
+              <div class="hat-actions"><button type="button" class="btn ghost hat-prev">Torna al Bianco</button><button type="button" class="btn secondary hat-next">Vai al Verde</button></div>
+            </div>
+
+            <div class="hat-panel green" data-hat-panel="green">
+              <h4><span class="hat-dot green"></span>Cappello verde · pratiche di convivenza</h4>
+              <p class="hat-intro">Pensa ad azioni quotidiane, non a dichiarazioni astratte. Devono essere facili da provare in store.</p>
+              <div class="grid-3">
+                <div class="field"><label for="g02_green_1">Pratica 1 <span class="req">*</span></label><textarea id="g02_green_1" name="g02_green_1" data-required="true" placeholder="Es. micro-affiancamenti incrociati..."></textarea></div>
+                <div class="field"><label for="g02_green_2">Pratica 2 <span class="req">*</span></label><textarea id="g02_green_2" name="g02_green_2" data-required="true" placeholder="Es. regole condivise sui canali di comunicazione..."></textarea></div>
+                <div class="field"><label for="g02_green_3">Pratica 3 <span class="req">*</span></label><textarea id="g02_green_3" name="g02_green_3" data-required="true" placeholder="Es. tutoraggio reciproco su digitale e procedure..."></textarea></div>
+              </div>
+              <div class="hat-actions"><button type="button" class="btn ghost hat-prev">Torna al Nero</button><button type="button" class="btn secondary hat-next">Vai al Giallo</button></div>
+            </div>
+
+            <div class="hat-panel yellow" data-hat-panel="yellow">
+              <h4><span class="hat-dot yellow"></span>Cappello giallo · valore della scelta</h4>
+              <p class="hat-intro">Scegli una pratica o combinazione di pratiche e chiarisci il beneficio atteso.</p>
+              <div class="field"><label for="g02_yellow">Quale scelta crea più valore per team, cliente e apprendimento? <span class="req">*</span></label><textarea id="g02_yellow" name="g02_yellow" data-required="true"></textarea></div>
+              <div class="hat-actions"><button type="button" class="btn ghost hat-prev">Torna al Verde</button><button type="button" class="btn secondary hat-next">Vai al Blu</button></div>
+            </div>
+
+            <div class="hat-panel blue" data-hat-panel="blue">
+              <h4><span class="hat-dot blue"></span>Cappello blu · piano e frase al team</h4>
+              <p class="hat-intro">Chiudi con una decisione osservabile: cosa fai nei prossimi 7 giorni e come lo comunichi.</p>
+              <div class="grid-2">
+                <div class="field"><label for="g02_blue_plan">Piano dei prossimi 7 giorni <span class="req">*</span></label><textarea id="g02_blue_plan" name="g02_blue_plan" data-required="true"></textarea></div>
+                <div class="field"><label for="g02_blue_phrase">Frase che diresti al team <span class="req">*</span></label><textarea id="g02_blue_phrase" name="g02_blue_phrase" data-required="true" placeholder="Es. Voglio che usiamo le differenze come risorsa..."></textarea></div>
+              </div>
+              <div class="hat-actions"><button type="button" class="btn ghost hat-prev">Torna al Giallo</button><button type="button" class="btn primary" data-go-step="scelta">Completa e vai agli esercizi a scelta</button></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel step-panel" data-step="scelta" aria-labelledby="scelta-title" hidden>
+          <div class="panel-header">
+            <div>
+              <p class="panel-kicker">Passo 5 · esercizi a scelta</p>
+              <h2 id="scelta-title">Scegli se allenarti ancora.</h2>
+              <p class="panel-lead">Questa sezione è facoltativa: puoi non compilarla, scegliere un solo caso oppure compilarne più di uno. I casi extra continuano la numerazione dopo i due guidati. Se selezioni un caso, si apre subito il relativo spazio di lavoro.</p>
+            </div>
+            <span class="badge" id="optionalCountBadge">0 selezionati</span>
+          </div>
+
+          <div class="option-list" id="optionList">
+            <label class="option-card" for="o03_active" data-option-card="o03">
+              <input type="checkbox" id="o03_active" name="o03_active">
+              <span><h3>03 · Progetto ALL-IN nel team</h3><p>Accorgimenti organizzativi per introdurre una persona con disabilità intellettiva.</p></span>
+              <span class="badge">Apri</span>
+            </label>
+            <div class="optional-workbook" data-optional-area="o03" hidden>
+              <div class="optional-head"><h3>03 · Accogliere un progetto ALL-IN</h3><p><strong>Scenario.</strong> Accogli un progetto ALL-IN nel tuo team. Quali accorgimenti organizzativi metti in campo per introdurre una persona con disabilità intellettiva?</p></div>
+              <div class="optional-body compact-hat-grid">
+                <div class="compact-hat red"><h4><span class="hat-dot red"></span>Rosso</h4><p class="hint">Cosa senti rispetto all'inserimento?</p><textarea id="o03_red" name="o03_red"></textarea></div>
+                <div class="compact-hat white"><h4><span class="hat-dot white"></span>Bianco</h4><p class="hint">Quali informazioni oggettive ti servono?</p><textarea id="o03_white" name="o03_white"></textarea></div>
+                <div class="compact-hat black"><h4><span class="hat-dot black"></span>Nero</h4><p class="hint">Quali rischi organizzativi devi prevenire?</p><textarea id="o03_black" name="o03_black"></textarea></div>
+                <div class="compact-hat green"><h4><span class="hat-dot green"></span>Verde</h4><p class="hint">Tre adattamenti possibili a turni, task, tutoraggio, spazi o routine.</p><textarea id="o03_green" name="o03_green"></textarea></div>
+                <div class="compact-hat yellow"><h4><span class="hat-dot yellow"></span>Giallo</h4><p class="hint">Quale beneficio genera per persona, team e negozio?</p><textarea id="o03_yellow" name="o03_yellow"></textarea></div>
+                <div class="compact-hat blue"><h4><span class="hat-dot blue"></span>Blu</h4><p class="hint">Scrivi un mini-piano di onboarding inclusivo.</p><textarea id="o03_blue" name="o03_blue"></textarea></div>
+              </div>
+            </div>
+
+            <label class="option-card" for="o04_active" data-option-card="o04">
+              <input type="checkbox" id="o04_active" name="o04_active">
+              <span><h3>04 · Categorie protette e fragilità non note</h3><p>Come acquisire informazioni senza invadere e trasformare le diversità in risorsa.</p></span>
+              <span class="badge">Apri</span>
+            </label>
+            <div class="optional-workbook" data-optional-area="o04" hidden>
+              <div class="optional-head"><h3>04 · Fragilità non dichiarate</h3><p><strong>Scenario.</strong> Hai appena assunto una persona appartenente alle categorie protette, di cui non conosci le "fragilità". Quali strategie metti in campo?</p></div>
+              <div class="optional-body compact-hat-grid">
+                <div class="compact-hat red"><h4><span class="hat-dot red"></span>Rosso</h4><p class="hint">Quali timori o cautele senti?</p><textarea id="o04_red" name="o04_red"></textarea></div>
+                <div class="compact-hat white"><h4><span class="hat-dot white"></span>Bianco</h4><p class="hint">Quali segnali osservabili e domande professionali puoi raccogliere?</p><textarea id="o04_white" name="o04_white"></textarea></div>
+                <div class="compact-hat black"><h4><span class="hat-dot black"></span>Nero</h4><p class="hint">Quali rischi ci sono se fai supposizioni o domande inappropriate?</p><textarea id="o04_black" name="o04_black"></textarea></div>
+                <div class="compact-hat green"><h4><span class="hat-dot green"></span>Verde</h4><p class="hint">Tre strategie per creare fiducia progressiva.</p><textarea id="o04_green" name="o04_green"></textarea></div>
+                <div class="compact-hat yellow"><h4><span class="hat-dot yellow"></span>Giallo</h4><p class="hint">Quali benefici porta un ascolto rispettoso?</p><textarea id="o04_yellow" name="o04_yellow"></textarea></div>
+                <div class="compact-hat blue"><h4><span class="hat-dot blue"></span>Blu</h4><p class="hint">Scrivi la prima conversazione di onboarding e un follow-up.</p><textarea id="o04_blue" name="o04_blue"></textarea></div>
+              </div>
+            </div>
+
+            <label class="option-card" for="o05_active" data-option-card="o05">
+              <input type="checkbox" id="o05_active" name="o05_active">
+              <span><h3>05 · Segnalazione cliente su Luca</h3><p>Recovery cliente, apprendimento di Luca e allineamento del team.</p></span>
+              <span class="badge">Apri</span>
+            </label>
+            <div class="optional-workbook" data-optional-area="o05" hidden>
+              <div class="optional-head"><h3>05 · Segnalazione cliente su Luca</h3><p><strong>Scenario.</strong> Un cliente segnala che Luca ha gestito in maniera non congrua una richiesta. Gli altri membri del team sono in difficoltà su come reagire. Quale strategia metti in campo?</p></div>
+              <div class="optional-body compact-hat-grid">
+                <div class="compact-hat red"><h4><span class="hat-dot red"></span>Rosso</h4><p class="hint">Cosa provi verso cliente, Luca e team?</p><textarea id="o05_red" name="o05_red"></textarea></div>
+                <div class="compact-hat white"><h4><span class="hat-dot white"></span>Bianco</h4><p class="hint">Quali fatti devi verificare prima di decidere?</p><textarea id="o05_white" name="o05_white"></textarea></div>
+                <div class="compact-hat black"><h4><span class="hat-dot black"></span>Nero</h4><p class="hint">Quali rischi per esperienza cliente, fiducia e apprendimento?</p><textarea id="o05_black" name="o05_black"></textarea></div>
+                <div class="compact-hat green"><h4><span class="hat-dot green"></span>Verde</h4><p class="hint">Tre modi per gestire recovery, apprendimento e allineamento.</p><textarea id="o05_green" name="o05_green"></textarea></div>
+                <div class="compact-hat yellow"><h4><span class="hat-dot yellow"></span>Giallo</h4><p class="hint">Quale strategia trasforma l'errore in apprendimento?</p><textarea id="o05_yellow" name="o05_yellow"></textarea></div>
+                <div class="compact-hat blue"><h4><span class="hat-dot blue"></span>Blu</h4><p class="hint">Cosa fai oggi, a fine turno e nei prossimi 7 giorni?</p><textarea id="o05_blue" name="o05_blue"></textarea></div>
+              </div>
+            </div>
+
+            <label class="option-card" for="o06_active" data-option-card="o06">
+              <input type="checkbox" id="o06_active" name="o06_active">
+              <span><h3>06 · Tutor per due nuove risorse Gen Z</h3><p>Scegli uno o due tutor per l'onboarding e motiva le scelte.</p></span>
+              <span class="badge">Apri</span>
+            </label>
+            <div class="optional-workbook" data-optional-area="o06" hidden>
+              <div class="optional-head"><h3>06 · Tutor Gen Z</h3><p><strong>Scenario.</strong> Hai inserito nel tuo team 2 nuove risorse appartenenti alla Gen Z. Scegli uno/due tutor che li seguiranno nell'onboarding e motiva le tue scelte.</p></div>
+              <div class="optional-body compact-hat-grid">
+                <div class="compact-hat red"><h4><span class="hat-dot red"></span>Rosso</h4><p class="hint">Quali aspettative o timori hai?</p><textarea id="o06_red" name="o06_red"></textarea></div>
+                <div class="compact-hat white"><h4><span class="hat-dot white"></span>Bianco</h4><p class="hint">Quali dati servono per scegliere i tutor?</p><textarea id="o06_white" name="o06_white"></textarea></div>
+                <div class="compact-hat black"><h4><span class="hat-dot black"></span>Nero</h4><p class="hint">Quali rischi se scegli solo per anzianità o simpatia?</p><textarea id="o06_black" name="o06_black"></textarea></div>
+                <div class="compact-hat green"><h4><span class="hat-dot green"></span>Verde</h4><p class="hint">Tre modelli possibili di tutoraggio.</p><textarea id="o06_green" name="o06_green"></textarea></div>
+                <div class="compact-hat yellow"><h4><span class="hat-dot yellow"></span>Giallo</h4><p class="hint">Quale scelta genera apprendimento e motivazione?</p><textarea id="o06_yellow" name="o06_yellow"></textarea></div>
+                <div class="compact-hat blue"><h4><span class="hat-dot blue"></span>Blu</h4><p class="hint">Nomina i tutor, motiva la scelta e definisci un check-point.</p><textarea id="o06_blue" name="o06_blue"></textarea></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="callout warning"><strong>Nota:</strong> non devi aprire tutto. Se vuoi fare solo i due guidati, vai avanti al riepilogo.</div>
+        </section>
+
+        <section class="panel step-panel" data-step="riepilogo" aria-labelledby="riepilogo-title" hidden>
+          <div class="panel-header">
+            <div>
+              <p class="panel-kicker">Passo 6 · riepilogo</p>
+              <h2 id="riepilogo-title">Chiudi il ragionamento.</h2>
+              <p class="panel-lead">Aggiungi la sintesi che userai nel follow-up. Poi controlla cosa manca prima dell'invio.</p>
+            </div>
+            <span class="badge warn">Sintesi finale</span>
+          </div>
+
+          <div class="grid-2">
+            <div class="field">
+              <label for="finalTakeaway">Qual è l'apprendimento principale che porti via? <span class="req">*</span></label>
+              <p class="hint">Scrivi una frase concreta: da domani, cosa cambia nel tuo modo di intervenire?</p>
+              <textarea id="finalTakeaway" name="final_takeaway" data-required="true"></textarea>
+            </div>
+            <div class="field">
+              <label for="supportNeed">Su cosa vuoi confronto nella Live 5?</label>
+              <p class="hint">Domande, dubbi, casi reali da portare al follow-up.</p>
+              <textarea id="supportNeed" name="support_need"></textarea>
+            </div>
+          </div>
+          <div class="field">
+            <label for="bestPractice">Hai una pratica inclusiva già attiva nel tuo negozio che vuoi condividere?</label>
+            <textarea id="bestPractice" name="best_practice" placeholder="Descrivi brevemente pratica, contesto e risultato osservato..."></textarea>
+          </div>
+          <div class="field">
+            <div class="check-row">
+              <input type="checkbox" id="shareConsent" name="share_consent">
+              <label for="shareConsent">Autorizzo l'utilizzo delle mie risposte in forma aggregata o anonimizzata durante il follow-up formativo.</label>
+            </div>
+          </div>
+
+          <div class="summary-grid" id="reviewPreview" aria-live="polite"></div>
+        </section>
+
+        <section class="panel step-panel" data-step="invio" aria-labelledby="invio-title" hidden>
+          <div class="panel-header">
+            <div>
+              <p class="panel-kicker">Passo 7 · invio</p>
+              <h2 id="invio-title">Controlla e invia.</h2>
+              <p class="panel-lead">Prima dell'invio definitivo puoi scegliere se inviare una copia anche al tuo HR di riferimento. Dopo l'invio si attiverà il pulsante per scaricare il PDF del quaderno compilato.</p>
+            </div>
+            <span class="badge" id="submitReadyBadge">Controllo</span>
+          </div>
+
+          <div class="summary-grid" id="finalReview" aria-live="polite"></div>
+          <div id="missingBox" class="callout danger" hidden></div>
+
+          <div class="callout">
+            <strong>Configurazione Power Automate:</strong> incolla l'URL del trigger HTTP nella costante <code>POWER_AUTOMATE_URL</code> dentro lo script finale di questo file. Se resta vuota, il pulsante principale scarica il JSON tecnico con le risposte.
+          </div>
+
+          <div class="field">
+            <div class="check-row">
+              <input type="checkbox" id="sendToHr" name="send_to_hr">
+              <label for="sendToHr">Invia i dati anche al mio HR di riferimento.</label>
+            </div>
+          </div>
+          <div class="field" id="hrEmailField" hidden>
+            <label for="hrEmail">Email HR di riferimento <span class="req">*</span></label>
+            <input id="hrEmail" name="hr_email" type="email" placeholder="nome.cognome@azienda.com">
+          </div>
+
+          <div class="callout success" id="postSubmitBox" hidden>
+            <strong>Invio completato.</strong> Ora puoi scaricare il PDF del quaderno compilato. Si aprirà la finestra del browser: scegli “Salva come PDF”.
+          </div>
+
+          <div class="grid-2">
+            <button type="submit" class="btn primary" id="submitBtn">Invia definitivamente</button>
+            <button type="button" class="btn secondary" id="downloadJsonBtn">Scarica JSON tecnico</button>
+            <button type="button" class="btn secondary" id="downloadCsvBtn">Scarica CSV tecnico</button>
+            <button type="button" class="btn success" id="printBtn" hidden disabled>Scarica PDF</button>
+            <button type="button" class="btn danger" id="resetBtn">Cancella bozza</button>
+          </div>
+          <div id="status" class="status" role="status" aria-live="polite"></div>
+        </section>
+      </main>
+    </div>
+
+    <footer class="bottom-nav" aria-label="Navigazione precedente successivo">
+      <div class="bottom-inner">
+        <div class="bottom-current" id="bottomCurrent"><strong>Partenza</strong> · leggi come funziona</div>
+        <div class="bottom-actions">
+          <button type="button" class="btn ghost" id="prevStepBtn">Indietro</button>
+          <button type="button" class="btn primary" id="nextStepBtn">Avanti</button>
+        </div>
+      </div>
+    </footer>
+  </form>
+
+  <script>
+    /*
+      CONFIGURAZIONE POWER AUTOMATE
+      1. Crea un flow con trigger "When an HTTP request is received".
+      2. Copia l'URL del trigger nella costante POWER_AUTOMATE_URL.
+      3. Il file invia in modalita no-cors come testo JSON, utile per GitHub Pages.
+      4. In Power Automate usa triggerBody(); se arriva come stringa, usa json(triggerBody()).
+    */
+    const POWER_AUTOMATE_URL = "";
+    const STORAGE_KEY = "quaderno-6-cappelli-di-negozi-ux-v4";
+
+    const steps = [
+      { id: "start", label: "Partenza", short: "Come funziona", status: "orientamento" },
+      { id: "dati", label: "Dati", short: "Partecipante", status: "obbligatorio" },
+      { id: "guidato-01", label: "01 Luca", short: "Cassa e cliente", status: "guidato" },
+      { id: "guidato-02", label: "02 Generazioni", short: "Age diversity", status: "guidato" },
+      { id: "scelta", label: "A scelta", short: "Casi extra", status: "facoltativo" },
+      { id: "riepilogo", label: "Riepilogo", short: "Sintesi", status: "obbligatorio" },
+      { id: "invio", label: "Invio", short: "Download o flow", status: "finale" }
+    ];
+
+    const exerciseMeta = {
+      G01: {
+        id: "G01",
+        type: "guided",
+        title: "Luca in cassa durante il picco",
+        theme: "Disabilita intellettiva e pressione cliente",
+        scenario: "E sabato pomeriggio, negozio pieno. Luca e in cassa ma va in difficolta con i pagamenti. Una cliente si innervosisce: Scusi, ma non c'e qualcuno piu veloce? Come intervieni?"
+      },
+      G02: {
+        id: "G02",
+        type: "guided",
+        title: "Far convivere generazioni differenti",
+        theme: "Age diversity nella quotidianita",
+        scenario: "All'interno del team sono presenti generazioni differenti. Emergono tensioni su comunicazione, uso della tecnologia e approccio al lavoro. Una volta interiorizzate le differenze esistenti, come le fai convivere nella quotidianita?"
+      },
+      O03: {
+        id: "O03",
+        type: "optional",
+        title: "Accogliere un progetto ALL-IN nel team",
+        theme: "Inserimento di una persona con disabilita intellettiva",
+        scenario: "Accogli un progetto ALL-IN nel tuo team. Quali accorgimenti organizzativi metti in campo per introdurre una persona con disabilita intellettiva?"
+      },
+      O04: {
+        id: "O04",
+        type: "optional",
+        title: "Categorie protette e fragilita non note",
+        theme: "Ascolto, confini e informazioni professionali",
+        scenario: "Hai appena assunto una persona appartenente alle categorie protette, di cui non conosci le fragilita. Quali strategie metti in campo per acquisire informazioni che ti permettano di capire come le diversita possano diventare una risorsa?"
+      },
+      O05: {
+        id: "O05",
+        type: "optional",
+        title: "Segnalazione cliente su Luca",
+        theme: "Recovery, apprendimento e team alignment",
+        scenario: "Un cliente segnala che Luca, membro del tuo team con disabilita intellettiva lieve, ha gestito in maniera non congrua una richiesta. Gli altri membri del team sono in difficolta su come reagire. Quale strategia metti in campo?"
+      },
+      O06: {
+        id: "O06",
+        type: "optional",
+        title: "Tutor per due nuove risorse Gen Z",
+        theme: "Onboarding e collaborazione intergenerazionale",
+        scenario: "Hai inserito nel tuo team 2 nuove risorse appartenenti alla Gen Z. Scegli uno/due tutor che li seguiranno nell'onboarding e motiva le tue scelte."
+      }
+    };
+
+    const hatPrompts = {
+      red: "Cappello rosso: emozioni e reazioni immediate",
+      white: "Cappello bianco: fatti osservabili e informazioni utili",
+      black: "Cappello nero: rischi e criticita",
+      green: "Cappello verde: alternative e soluzioni possibili",
+      yellow: "Cappello giallo: benefici e valore della scelta",
+      blue: "Cappello blu: decisione, sequenza e prossimi passi"
+    };
+
+    const form = document.getElementById("workbookForm");
+    const stepper = document.getElementById("stepper");
+    const mobileStepSelect = document.getElementById("mobileStepSelect");
+    const prevStepBtn = document.getElementById("prevStepBtn");
+    const nextStepBtn = document.getElementById("nextStepBtn");
+    const bottomCurrent = document.getElementById("bottomCurrent");
+    const progressBar = document.getElementById("progressBar");
+    const progressLabel = document.getElementById("progressLabel");
+    const stepCounter = document.getElementById("stepCounter");
+    const saveState = document.getElementById("saveState");
+    const statusBox = document.getElementById("status");
+    const missingBox = document.getElementById("missingBox");
+    const submitReadyBadge = document.getElementById("submitReadyBadge");
+
+    let currentStep = 0;
+    let saveTimer = null;
+    let finalSubmissionDone = false;
+
+    function qs(selector, root = document) { return root.querySelector(selector); }
+    function qsa(selector, root = document) { return Array.from(root.querySelectorAll(selector)); }
+    function val(id) {
+      const el = document.getElementById(id);
+      if (!el) return "";
+      if (el.type === "checkbox") return el.checked;
+      return (el.value || "").trim();
+    }
+    function esc(value) {
+      return String(value ?? "").replace(/[&<>'"]/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" }[char]));
+    }
+
+    function buildNavigation() {
+      stepper.innerHTML = steps.map((step, index) => `
+        <button type="button" class="step-button" data-step-index="${index}" aria-label="Vai a ${esc(step.label)}">
+          <span class="step-number">${index + 1}</span>
+          <span><span class="step-title">${esc(step.label)}</span><br><span class="step-status">${esc(step.short)}</span></span>
+          <span class="step-status" data-step-state></span>
+        </button>
+      `).join("");
+      mobileStepSelect.innerHTML = steps.map((step, index) => `<option value="${index}">${index + 1}. ${esc(step.label)} - ${esc(step.short)}</option>`).join("");
+      qsa(".step-button", stepper).forEach(btn => btn.addEventListener("click", () => setStep(Number(btn.dataset.stepIndex), { focus: true })));
+      mobileStepSelect.addEventListener("change", () => setStep(Number(mobileStepSelect.value), { focus: true }));
+    }
+
+    function highestUnlockedIndex() {
+      let unlocked = 0;
+      for (let i = 0; i < steps.length - 1; i += 1) {
+        if (stepComplete(steps[i].id)) unlocked = i + 1;
+        else break;
+      }
+      return unlocked;
+    }
+
+    function canEnterStep(index) {
+      return index <= highestUnlockedIndex();
+    }
+
+    function refreshStepLocks() {
+      const unlocked = highestUnlockedIndex();
+      qsa(".step-button", stepper).forEach((btn, index) => {
+        const locked = index > unlocked;
+        btn.disabled = locked;
+        btn.classList.toggle("is-locked", locked);
+        btn.setAttribute("aria-disabled", locked ? "true" : "false");
+        const state = qs("[data-step-state]", btn);
+        if (state && locked) state.textContent = "";
+      });
+      qsa("option", mobileStepSelect).forEach((option, index) => { option.disabled = index > unlocked; });
+    }
+
+    function setStep(index, options = {}) {
+      const requested = Math.max(0, Math.min(index, steps.length - 1));
+      currentStep = canEnterStep(requested) ? requested : highestUnlockedIndex();
+      const active = steps[currentStep];
+      qsa(".step-panel").forEach(panel => {
+        const isActive = panel.dataset.step === active.id;
+        panel.hidden = !isActive;
+      });
+      qsa(".step-button", stepper).forEach((btn, i) => {
+        btn.classList.toggle("is-active", i === currentStep);
+        btn.setAttribute("aria-current", i === currentStep ? "step" : "false");
+      });
+      mobileStepSelect.value = String(currentStep);
+      prevStepBtn.disabled = currentStep === 0;
+      nextStepBtn.hidden = currentStep === steps.length - 1;
+      nextStepBtn.textContent = currentStep === steps.length - 2 ? "Vai all'invio" : "Avanti";
+      bottomCurrent.innerHTML = `<strong>${esc(active.label)}</strong> · ${esc(active.short)}`;
+      stepCounter.textContent = `Passo ${currentStep + 1} di ${steps.length}`;
+      if (["riepilogo", "invio"].includes(active.id)) renderReviews();
+      updateProgress();
+      persistDraft(false);
+      if (options.focus) {
+        const panel = qs(`.step-panel[data-step="${active.id}"]`);
+        const heading = qs("h1, h2", panel);
+        if (heading) {
+          heading.setAttribute("tabindex", "-1");
+          heading.focus({ preventScroll: true });
+        }
+      }
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function currentPanel() {
+      return qs(`.step-panel[data-step="${steps[currentStep].id}"]`);
+    }
+
+    function requiredFields(root = form) {
+      return qsa("[data-required='true']", root);
+    }
+
+    function isFieldFilled(el) {
+      if (el.type === "checkbox") return el.checked;
+      const value = (el.value || "").trim();
+      if (!value) return false;
+      if (el.type === "email") return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+      return true;
+    }
+
+    function fieldLabel(el) {
+      const label = el.id ? qs(`label[for="${el.id}"]`) : null;
+      if (!label) return el.name || "Campo obbligatorio";
+      return label.textContent.replace("*", "").trim();
+    }
+
+    function stepForField(el) {
+      const panel = el.closest(".step-panel");
+      return panel ? panel.dataset.step : "";
+    }
+
+    function stepIndexById(id) {
+      return steps.findIndex(step => step.id === id);
+    }
+
+    function missingRequired(root = form) {
+      return requiredFields(root).filter(el => !isFieldFilled(el)).map(el => ({
+        el,
+        label: fieldLabel(el),
+        stepId: stepForField(el),
+        stepLabel: steps[stepIndexById(stepForField(el))]?.label || ""
+      }));
+    }
+
+    function clearInvalidState() {
+      qsa(".field.is-invalid").forEach(field => {
+        field.classList.remove("is-invalid");
+        const error = qs(".error-text", field);
+        if (error) error.remove();
+      });
+      qsa("[aria-invalid='true']").forEach(el => el.removeAttribute("aria-invalid"));
+    }
+
+    function markInvalid(missing) {
+      clearInvalidState();
+      missing.forEach(item => {
+        const field = item.el.closest(".field") || item.el.closest(".check-row")?.parentElement;
+        if (!field) return;
+        field.classList.add("is-invalid");
+        item.el.setAttribute("aria-invalid", "true");
+        if (!qs(".error-text", field)) {
+          const error = document.createElement("div");
+          error.className = "error-text";
+          error.textContent = item.el.type === "email" ? "Inserisci un indirizzo email valido." : "Campo obbligatorio.";
+          field.appendChild(error);
+        }
+      });
+    }
+
+    function stepComplete(stepId) {
+      const panel = qs(`.step-panel[data-step="${stepId}"]`);
+      const fields = requiredFields(panel);
+      if (!fields.length) return true;
+      return fields.every(isFieldFilled);
+    }
+
+    function syncConditionalFields() {
+      const hrField = document.getElementById("hrEmailField");
+      const hrEmail = document.getElementById("hrEmail");
+      const shouldSend = val("sendToHr");
+      if (hrField && hrEmail) {
+        hrField.hidden = !shouldSend;
+        hrEmail.dataset.required = shouldSend ? "true" : "false";
+        if (!shouldSend) {
+          hrEmail.removeAttribute("aria-invalid");
+        }
+      }
+    }
+
+    function updateProgress() {
+      syncConditionalFields();
+      const required = requiredFields();
+      const done = required.filter(isFieldFilled).length;
+      const percentage = required.length ? Math.round((done / required.length) * 100) : 100;
+      progressBar.style.width = `${percentage}%`;
+      progressLabel.textContent = `${percentage}%`;
+
+      qsa(".step-button", stepper).forEach((btn, index) => {
+        const step = steps[index];
+        const complete = index < currentStep && stepComplete(step.id);
+        btn.classList.toggle("is-complete", complete);
+        const state = qs("[data-step-state]", btn);
+        if (state) state.textContent = complete ? "✓" : "";
+      });
+
+      updateHatCompletion("g01", "g01Completion");
+      updateHatCompletion("g02", "g02Completion");
+      updateOptionalVisibility();
+      refreshStepLocks();
+      updatePostSubmitUi();
+      if (["riepilogo", "invio"].includes(steps[currentStep].id)) renderReviews();
+    }
+
+    function updateHatCompletion(exercise, badgeId) {
+      const workspace = qs(`.exercise-workspace[data-exercise="${exercise}"]`);
+      if (!workspace) return;
+      const panels = qsa("[data-hat-panel]", workspace);
+      let complete = 0;
+      panels.forEach(panel => {
+        const fields = requiredFields(panel);
+        const isComplete = fields.length && fields.every(isFieldFilled);
+        if (isComplete) complete += 1;
+        const hat = panel.dataset.hatPanel;
+        const tab = qs(`.hat-tab[data-hat="${hat}"]`, workspace);
+        if (tab) tab.classList.toggle("is-complete", isComplete);
+      });
+      updateHatLocks(workspace);
+      const badge = document.getElementById(badgeId);
+      if (badge) {
+        badge.textContent = `${complete}/6 cappelli`;
+        badge.classList.toggle("ok", complete === 6);
+        badge.classList.toggle("warn", complete !== 6);
+      }
+    }
+
+    function updateOptionalVisibility() {
+      const selected = ["o03", "o04", "o05", "o06"].filter(prefix => val(`${prefix}_active`));
+      qsa("[data-option-card]").forEach(card => {
+        const prefix = card.dataset.optionCard;
+        const isSelected = val(`${prefix}_active`);
+        card.classList.toggle("is-selected", isSelected);
+        const badge = qs(".badge", card);
+        if (badge) badge.textContent = isSelected ? "Selezionato" : "Apri";
+      });
+      qsa("[data-optional-area]").forEach(area => {
+        const prefix = area.dataset.optionalArea;
+        const hasContent = optionalHasContent(prefix);
+        area.hidden = !(val(`${prefix}_active`) || hasContent);
+      });
+      const badge = document.getElementById("optionalCountBadge");
+      if (badge) badge.textContent = `${selected.length} selezionati`;
+    }
+
+    function hatsForWorkspace(workspace) {
+      return qsa(".hat-tab", workspace).map(btn => btn.dataset.hat);
+    }
+
+    function hatComplete(workspace, hat) {
+      const panel = qs(`[data-hat-panel="${hat}"]`, workspace);
+      const fields = requiredFields(panel);
+      return fields.length ? fields.every(isFieldFilled) : true;
+    }
+
+    function canEnterHat(workspace, targetHat) {
+      const hats = hatsForWorkspace(workspace);
+      const targetIndex = hats.indexOf(targetHat);
+      if (targetIndex <= 0) return true;
+      return hats.slice(0, targetIndex).every(hat => hatComplete(workspace, hat));
+    }
+
+    function updateHatLocks(workspace) {
+      qsa(".hat-tab", workspace).forEach(btn => {
+        const locked = !canEnterHat(workspace, btn.dataset.hat);
+        btn.disabled = locked;
+        btn.setAttribute("aria-disabled", locked ? "true" : "false");
+      });
+    }
+
+    function activateHat(workspace, hat, force = false) {
+      if (!force && !canEnterHat(workspace, hat)) return false;
+      qsa(".hat-tab", workspace).forEach(btn => {
+        const active = btn.dataset.hat === hat;
+        btn.classList.toggle("is-active", active);
+        btn.setAttribute("aria-selected", active ? "true" : "false");
+      });
+      qsa(".hat-panel", workspace).forEach(panel => panel.classList.toggle("is-active", panel.dataset.hatPanel === hat));
+      updateHatLocks(workspace);
+      return true;
+    }
+
+    function activateHatForField(el) {
+      const workspace = el.closest(".exercise-workspace");
+      const panel = el.closest(".hat-panel");
+      if (workspace && panel) activateHat(workspace, panel.dataset.hatPanel, true);
+    }
+
+    function validateCurrentHat(workspace) {
+      const panel = qs(".hat-panel.is-active", workspace);
+      const missing = missingRequired(panel);
+      if (!missing.length) return true;
+      markInvalid(missing);
+      const first = missing[0].el;
+      setTimeout(() => first.focus({ preventScroll: false }), 120);
+      return false;
+    }
+
+    function initHatWorkspaces() {
+      qsa(".exercise-workspace").forEach(workspace => {
+        const hats = hatsForWorkspace(workspace);
+        qsa(".hat-tab", workspace).forEach(btn => btn.addEventListener("click", () => activateHat(workspace, btn.dataset.hat)));
+        qsa(".hat-next", workspace).forEach(btn => btn.addEventListener("click", () => {
+          if (!validateCurrentHat(workspace)) return;
+          const active = qs(".hat-tab.is-active", workspace)?.dataset.hat;
+          const index = hats.indexOf(active);
+          activateHat(workspace, hats[Math.min(index + 1, hats.length - 1)]);
+          qs(".hat-tabs", workspace).scrollIntoView({ behavior: "smooth", block: "start" });
+        }));
+        qsa(".hat-prev", workspace).forEach(btn => btn.addEventListener("click", () => {
+          const active = qs(".hat-tab.is-active", workspace)?.dataset.hat;
+          const index = hats.indexOf(active);
+          activateHat(workspace, hats[Math.max(index - 1, 0)], true);
+          qs(".hat-tabs", workspace).scrollIntoView({ behavior: "smooth", block: "start" });
+        }));
+        activateHat(workspace, hats[0], true);
+      });
+    }
+
+    function optionalHasContent(prefix) {
+      return ["red", "white", "black", "green", "yellow", "blue"].some(hat => val(`${prefix}_${hat}`));
+    }
+
+    function collectGuidedG01() {
+      return {
+        ...exerciseMeta.G01,
+        hats: {
+          red: { prompt: hatPrompts.red, answer: val("g01_red") },
+          white: { prompt: hatPrompts.white, answer: val("g01_white") },
+          black: { prompt: hatPrompts.black, answer: val("g01_black") },
+          green: { prompt: hatPrompts.green, answer: [val("g01_green_1"), val("g01_green_2"), val("g01_green_3")].filter(Boolean) },
+          yellow: { prompt: hatPrompts.yellow, answer: val("g01_yellow") },
+          blue: {
+            prompt: "Cappello blu: cosa fai nei primi 30 secondi",
+            answer: {
+              frase_cliente: val("g01_blue_customer"),
+              frase_luca: val("g01_blue_luca"),
+              azione_30_secondi: val("g01_blue_action")
+            }
+          }
+        }
+      };
+    }
+
+    function collectGuidedG02() {
+      return {
+        ...exerciseMeta.G02,
+        hats: {
+          red: { prompt: hatPrompts.red, answer: val("g02_red") },
+          white: { prompt: hatPrompts.white, answer: val("g02_white") },
+          black: { prompt: hatPrompts.black, answer: val("g02_black") },
+          green: { prompt: hatPrompts.green, answer: [val("g02_green_1"), val("g02_green_2"), val("g02_green_3")].filter(Boolean) },
+          yellow: { prompt: hatPrompts.yellow, answer: val("g02_yellow") },
+          blue: {
+            prompt: "Cappello blu: piano dei prossimi 7 giorni e frase al team",
+            answer: {
+              piano_7_giorni: val("g02_blue_plan"),
+              frase_team: val("g02_blue_phrase")
+            }
+          }
+        }
+      };
+    }
+
+    function collectOptional(id, prefix) {
+      const active = val(`${prefix}_active`);
+      if (!active && !optionalHasContent(prefix)) return null;
+      return {
+        ...exerciseMeta[id],
+        selected: Boolean(active),
+        hats: {
+          red: { prompt: hatPrompts.red, answer: val(`${prefix}_red`) },
+          white: { prompt: hatPrompts.white, answer: val(`${prefix}_white`) },
+          black: { prompt: hatPrompts.black, answer: val(`${prefix}_black`) },
+          green: { prompt: hatPrompts.green, answer: val(`${prefix}_green`) },
+          yellow: { prompt: hatPrompts.yellow, answer: val(`${prefix}_yellow`) },
+          blue: { prompt: hatPrompts.blue, answer: val(`${prefix}_blue`) }
+        }
+      };
+    }
+
+    function buildPayload() {
+      const optionalExercises = [
+        collectOptional("O03", "o03"),
+        collectOptional("O04", "o04"),
+        collectOptional("O05", "o05"),
+        collectOptional("O06", "o06")
+      ].filter(Boolean);
+
+      return {
+        meta: {
+          schema_version: "4.0-ux",
+          submission_id: (globalThis.crypto && typeof crypto.randomUUID === "function") ? crypto.randomUUID() : `submission-${Date.now()}`,
+          submitted_at: new Date().toISOString(),
+          source: "github-pages-html-workbook",
+          course: "Store Leader Academy",
+          module: "DE&I nei Negozi",
+          session: "Live 4 -> Live 5 follow-up",
+          workbook: "Quaderno degli esercizi - Tecnica dei sei cappelli - UX semplice v4"
+        },
+        participant: {
+          name: val("participantName"),
+          email: val("participantEmail"),
+          store: val("storeName"),
+          store_manager_tenure: val("managerTenure"),
+          completion_moment: val("completionMoment")
+        },
+        consents: {
+          privacy_confirm: val("privacyConfirm"),
+          share_anonymized_for_followup: val("shareConsent")
+        },
+        hr_copy: {
+          requested: val("sendToHr"),
+          hr_email: val("hrEmail")
+        },
+        completion: {
+          guided_exercises_completed: ["G01", "G02"],
+          optional_exercises_count: optionalExercises.length,
+          optional_exercises_ids: optionalExercises.map(ex => ex.id)
+        },
+        answers: [collectGuidedG01(), collectGuidedG02(), ...optionalExercises],
+        final_reflection: {
+          takeaway: val("finalTakeaway"),
+          support_need: val("supportNeed"),
+          best_practice: val("bestPractice")
+        }
+      };
+    }
+
+    function flattenAnswer(value) {
+      if (Array.isArray(value)) return value.join(" | ");
+      if (value && typeof value === "object") {
+        return Object.entries(value).map(([key, item]) => `${key}: ${item}`).join(" | ");
+      }
+      return value || "";
+    }
+
+    function payloadToCsv(payload) {
+      const rows = payload.answers.map(ex => ({
+        submission_id: payload.meta.submission_id,
+        submitted_at: payload.meta.submitted_at,
+        participant_name: payload.participant.name,
+        participant_email: payload.participant.email,
+        store: payload.participant.store,
+        store_manager_tenure: payload.participant.store_manager_tenure,
+        completion_moment: payload.participant.completion_moment,
+        hr_copy_requested: payload.hr_copy.requested,
+        hr_email: payload.hr_copy.hr_email,
+        exercise_id: ex.id,
+        exercise_type: ex.type,
+        exercise_title: ex.title,
+        exercise_theme: ex.theme,
+        scenario: ex.scenario,
+        hat_red: flattenAnswer(ex.hats.red.answer),
+        hat_white: flattenAnswer(ex.hats.white.answer),
+        hat_black: flattenAnswer(ex.hats.black.answer),
+        hat_green: flattenAnswer(ex.hats.green.answer),
+        hat_yellow: flattenAnswer(ex.hats.yellow.answer),
+        hat_blue: flattenAnswer(ex.hats.blue.answer),
+        final_takeaway: payload.final_reflection.takeaway,
+        support_need: payload.final_reflection.support_need,
+        best_practice: payload.final_reflection.best_practice,
+        optional_exercises_count: payload.completion.optional_exercises_count,
+        optional_exercises_ids: payload.completion.optional_exercises_ids.join(" | "),
+        privacy_confirm: payload.consents.privacy_confirm,
+        share_anonymized_for_followup: payload.consents.share_anonymized_for_followup
+      }));
+      const headers = Object.keys(rows[0] || {});
+      const escape = value => `"${String(value ?? "").replaceAll('"', '""')}"`;
+      return "\ufeff" + [headers.join(","), ...rows.map(row => headers.map(h => escape(row[h])).join(","))].join("\n");
+    }
+
+    function downloadFile(filename, content, type) {
+      const blob = new Blob([content], { type });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    function downloadJson() {
+      const payload = buildPayload();
+      downloadFile(`quaderno-6-cappelli-ux-v4-${Date.now()}.json`, JSON.stringify(payload, null, 2), "application/json;charset=utf-8");
+    }
+
+    function downloadCsv() {
+      const payload = buildPayload();
+      downloadFile(`quaderno-6-cappelli-ux-v4-${Date.now()}.csv`, payloadToCsv(payload), "text/csv;charset=utf-8");
+    }
+
+    function renderReviews() {
+      const optionalSelected = ["o03", "o04", "o05", "o06"].filter(prefix => val(`${prefix}_active`)).length;
+      const missing = missingRequired();
+      const completionText = missing.length ? `${missing.length} campi obbligatori mancanti` : "Tutto pronto";
+      const participant = val("participantName") || "Non compilato";
+      const store = val("storeName") || "Non compilato";
+      const email = val("participantEmail") || "Non compilato";
+      const tenure = val("managerTenure") || "Non compilato";
+      const hrCopy = val("sendToHr") ? `Sì${val("hrEmail") ? " · " + val("hrEmail") : ""}` : "No";
+
+      const html = `
+        <article class="review-box"><h3>Partecipante</h3><p><strong>Nome:</strong> ${esc(participant)}</p><p><strong>Email:</strong> ${esc(email)}</p><p><strong>Store:</strong> ${esc(store)}</p><p><strong>Ruolo SM da:</strong> ${esc(tenure)}</p></article>
+        <article class="review-box"><h3>Esercizi e invio</h3><p><strong>Guidati:</strong> 01 Luca + 02 Generazioni</p><p><strong>A scelta:</strong> ${optionalSelected} selezionati</p><p><strong>Copia HR:</strong> ${esc(hrCopy)}</p><p><strong>Stato:</strong> ${esc(completionText)}</p></article>
+      `;
+      const preview = document.getElementById("reviewPreview");
+      const finalReview = document.getElementById("finalReview");
+      if (preview) preview.innerHTML = html;
+      if (finalReview) finalReview.innerHTML = html;
+
+      if (missingBox) {
+        if (missing.length) {
+          missingBox.hidden = false;
+          missingBox.innerHTML = `<strong>Prima di inviare completa:</strong><ol class="missing-list">${missing.slice(0, 10).map(item => `<li>${esc(item.stepLabel)} · ${esc(item.label)}</li>`).join("")}${missing.length > 10 ? `<li>Altri ${missing.length - 10} campi...</li>` : ""}</ol>`;
+        } else {
+          missingBox.hidden = true;
+          missingBox.innerHTML = "";
+        }
+      }
+      if (submitReadyBadge) {
+        submitReadyBadge.textContent = missing.length ? "Da completare" : "Pronto";
+        submitReadyBadge.classList.toggle("ok", missing.length === 0);
+        submitReadyBadge.classList.toggle("warn", missing.length > 0);
+      }
+    }
+
+    function updatePostSubmitUi() {
+      const printBtn = document.getElementById("printBtn");
+      const postSubmitBox = document.getElementById("postSubmitBox");
+      if (printBtn) {
+        printBtn.hidden = !finalSubmissionDone;
+        printBtn.disabled = !finalSubmissionDone;
+      }
+      if (postSubmitBox) postSubmitBox.hidden = !finalSubmissionDone;
+    }
+
+    function markSubmitted() {
+      finalSubmissionDone = true;
+      updatePostSubmitUi();
+      persistDraft(true);
+    }
+
+    function showStatus(message, type = "") {
+      statusBox.className = `status show ${type}`.trim();
+      statusBox.textContent = message;
+    }
+
+    function persistDraft(showSaved = true) {
+      try {
+        const data = { __currentStep: currentStep, __finalSubmissionDone: finalSubmissionDone };
+        qsa("input, textarea, select", form).forEach(el => {
+          if (!el.name && !el.id) return;
+          const key = el.name || el.id;
+          data[key] = el.type === "checkbox" ? el.checked : el.value;
+        });
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        if (showSaved) {
+          saveState.innerHTML = `<span class="save-dot"></span><span>Bozza salvata</span>`;
+        }
+      } catch (err) {
+        console.warn("Bozza non salvata", err);
+        saveState.innerHTML = `<span class="save-dot" style="background:#8b2d18"></span><span>Bozza non salvata</span>`;
+      }
+    }
+
+    function scheduleSave() {
+      saveState.innerHTML = `<span class="save-dot" style="background:#8a4b00"></span><span>Salvataggio...</span>`;
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(() => persistDraft(true), 250);
+    }
+
+    function loadDraft() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        const data = JSON.parse(raw);
+        qsa("input, textarea, select", form).forEach(el => {
+          const key = el.name || el.id;
+          if (!(key in data)) return;
+          if (el.type === "checkbox") el.checked = Boolean(data[key]);
+          else el.value = data[key];
+        });
+        currentStep = Number.isInteger(data.__currentStep) ? data.__currentStep : 0;
+        finalSubmissionDone = Boolean(data.__finalSubmissionDone);
+      } catch (err) {
+        console.warn("Bozza non leggibile", err);
+      }
+    }
+
+    async function sendToPowerAutomate(payload) {
+      if (!POWER_AUTOMATE_URL) {
+        downloadJson();
+        return { localOnly: true };
+      }
+      await fetch(POWER_AUTOMATE_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(payload)
+      });
+      return { sent: true };
+    }
+
+    function goToFirstMissing(missing) {
+      if (!missing.length) return;
+      const first = missing[0];
+      const index = stepIndexById(first.stepId);
+      if (index >= 0) setStep(index);
+      setTimeout(() => {
+        activateHatForField(first.el);
+        first.el.focus({ preventScroll: false });
+      }, 250);
+    }
+
+    form.addEventListener("input", () => { clearInvalidState(); scheduleSave(); updateProgress(); });
+    form.addEventListener("change", () => { clearInvalidState(); scheduleSave(); updateProgress(); });
+
+    form.addEventListener("submit", async event => {
+      event.preventDefault();
+      const missing = missingRequired();
+      renderReviews();
+      if (missing.length) {
+        markInvalid(missing);
+        showStatus(`Mancano ${missing.length} campi obbligatori. Ti porto al primo campo da completare.`, "err");
+        goToFirstMissing(missing);
+        return;
+      }
+
+      const payload = buildPayload();
+      const submitBtn = document.getElementById("submitBtn");
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Invio in corso...";
+      showStatus("Sto preparando le risposte...", "");
+      try {
+        const result = await sendToPowerAutomate(payload);
+        markSubmitted();
+        if (result.localOnly) showStatus("URL Power Automate non configurato: ho scaricato un file JSON con le risposte. Ora puoi scaricare il PDF.", "ok");
+        else showStatus("Risposte inviate. In modalita no-cors verifica la run history del flow Power Automate. Ora puoi scaricare il PDF.", "ok");
+      } catch (error) {
+        console.error(error);
+        showStatus("Invio non riuscito. Scarica il JSON o il CSV e verifica l'URL del flow Power Automate.", "err");
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Invia definitivamente";
+      }
+    });
+
+    function tryAdvanceStep() {
+      const missing = missingRequired(currentPanel());
+      if (missing.length) {
+        markInvalid(missing);
+        activateHatForField(missing[0].el);
+        setTimeout(() => missing[0].el.focus({ preventScroll: false }), 120);
+        return;
+      }
+      setStep(currentStep + 1, { focus: true });
+    }
+
+    prevStepBtn.addEventListener("click", () => setStep(currentStep - 1, { focus: true }));
+    nextStepBtn.addEventListener("click", tryAdvanceStep);
+    qsa("[data-go-step]").forEach(btn => btn.addEventListener("click", () => setStep(stepIndexById(btn.dataset.goStep), { focus: true })));
+    document.getElementById("downloadJsonBtn").addEventListener("click", downloadJson);
+    document.getElementById("downloadCsvBtn").addEventListener("click", downloadCsv);
+    document.getElementById("printBtn").addEventListener("click", () => {
+      if (!finalSubmissionDone) {
+        showStatus("Potrai scaricare il PDF dopo l'invio definitivo.", "err");
+        return;
+      }
+      window.print();
+    });
+    document.getElementById("resetBtn").addEventListener("click", () => {
+      const ok = confirm("Vuoi cancellare la bozza salvata su questo dispositivo e svuotare il modulo?");
+      if (!ok) return;
+      localStorage.removeItem(STORAGE_KEY);
+      form.reset();
+      clearInvalidState();
+      finalSubmissionDone = false;
+      currentStep = 0;
+      setStep(0);
+      showStatus("Bozza cancellata.", "ok");
+    });
+
+    buildNavigation();
+    initHatWorkspaces();
+    loadDraft();
+    updatePostSubmitUi();
+    setStep(currentStep);
+    updateProgress();
+  </script>
+</body>
+</html>
